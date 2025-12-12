@@ -18,16 +18,27 @@ connectDB();
 //connectRedis();
 
 // Routes
-app.get("/api", (req, res) => {
-  res.send("🎉 SmartRateLimiter API is live! Visit /api/users/signup to get started.");
+// Homepage for Vercel
+app.get("/", (req, res) => {
+  res.send(`
+    <h1>🎉 SmartRateLimiter API is live!</h1>
+    <p>Use <code>/api/users/signup</code> to get started.</p>
+    <p>Visit <code>/api/data</code> for the rate-limited route.</p>
+  `);
 });
+
 
 
 app.use("/api/users", userRoutes);
 app.use("/api/data", apiRoutes);
 app.use("/api/admin", adminRoutes);
 
-// Start server
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+}
+
 export default app;
+//Start server
+//app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+//export default app;
